@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Catalogo giochi – Ludoteca</title>
+<style>
+  :root{--bg:#faf7f2;--text:#0f172a;--muted:#475569;--card:#fff;--stroke:#e6e6ea;--shadow:0 12px 30px rgba(15,23,42,.08)}
+  *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  .wrap{max-width:980px;margin:0 auto;padding:24px}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  header a{text-decoration:none}
+  .back{padding:10px 12px;border:1px solid var(--stroke);border-radius:12px;background:#fff;box-shadow:var(--shadow)}
+  h1{font-size:clamp(1.6rem,3vw,2.2rem);margin:8px 0 12px}
+  .tools{display:grid;grid-template-columns:1fr 180px;gap:10px;margin:8px 0 18px}
+  .tools input,.tools select{padding:12px;border-radius:12px;border:1px solid var(--stroke);background:#fff;box-shadow:var(--shadow)}
+  .count{color:var(--muted);margin:0 0 10px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+  .card{background:#fff;border:1px solid var(--stroke);border-radius:18px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+  .name{font-weight:800}
+  .muted{color:var(--muted)}
+  .badges{display:flex;flex-wrap:wrap;gap:6px}
+  .badge{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:4px 8px;font-size:.85rem}
+  details summary{cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="index.html">← Home</a>
+    <a class="back" href="add.html">➕ Aggiungi gioco</a>
+  </header>
+
+  <h1>Catalogo giochi</h1>
+
+  <div class="tools">
+    <input id="q" placeholder="Cerca per nome, materiale o parole chiave…">
+    <select id="ordina">
+      <option value="name">Ordina: Nome</option>
+      <option value="eta">Ordina: Età</option>
+      <option value="durata">Ordina: Durata</option>
+    </select>
+  </div>
+
+  <p id="count" class="count"></p>
+  <section id="grid" class="grid"></section>
+  <p id="empty" class="muted" style="display:none">Nessun gioco trovato.</p>
+</div>
+
+<script>
+const GH_USER = "biolo20";
+const GH_REPO = "Ludoteca-collaborativa";
+const RAW_URL = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/main/games.json`;
+
+const params = new URLSearchParams(location.search);
+const initialQ = params.get('q') || '';
+const cat = (params.get('cat')||'').toLowerCase();
+
+const elQ = document.getElementById('q');
+const elOrd = document.getElementById('ordina');
+const elGrid = document.getElementById('grid');
+const elCount = document.getElementById('count');
+const elEmpty = document.getElementById('empty');
+
+const categoryTest = (g) => {
+  if(!cat) return true;
+  const spazio = String(g.spazio||'').toLowerCase();
+  const tags = (g.tags||[]).map(t=>String(t).toLowerCase());
+  if(cat==='palla') return tags.includes('palla');
+  if(cat==='staffette') return tags.includes('staffetta') || tags.includes('staffette');
+  if(cat==='teatrali') return tags.includes('teatro') || tags.includes('teatrale') || tags.includes('teatrali');
+  if(cat==='rompicapo') return tags.includes('rompicapo') || tags.includes('logica');
+  if(cat==='indoor') return spazio.includes('indoor');
+  if(cat==='outdoor') return spazio.includes('outdoor');
+  return true;
+};
+
+const state = { all:[], filtered:[] };
+
+function filter(){
+  const q = elQ.value.toLowerCase().trim();
+  state.filtered = state.all.filter(g=>{
+    if(!categoryTest(g)) return false;
+    const hay = [g.name,g.materiale,g.breve,(g.tags||[]).join(" ")].join(" ").toLowerCase();
+    if(q && !hay.includes(q)) return false;
+    return true;
+  });
+
+  const ord = elOrd.value;
+  state.filtered.sort((a,b)=>{
+    if(ord==='name') return (a.name||'').localeCompare(b.name||'','it');
+    if(ord==='eta') return (a.eta||0)-(b.eta||0);
+    if(ord==='durata') return (a.durata||0)-(b.durata||0);
+    return 0;
+  });
+
+  render();
+}
+
+function render(){
+  elGrid.innerHTML = '';
+  elCount.textContent = `${state.filtered.length} giochi`;
+  elEmpty.style.display = state.filtered.length ? 'none' : 'block';
+
+  state.filtered.forEach(g=>{
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="name">${g.name||'Senza nome'}</div>
+      <div class="muted">${g.breve||''}</div>
+      <div class="badges">
+        <span class="badge">Età: ${g.eta||'n/d'}+</span>
+        <span class="badge">Giocatori: ${g.giocatori||'n/d'}</span>
+        <span class="badge">Durata: ${g.durata? g.durata+"'" : 'n/d'}</span>
+        <span class="badge">Spazio: ${g.spazio||'—'}</span>
+      </div>
+      <div><strong>Materiale:</strong> ${g.materiale||'Nessuno'}</div>
+      ${g.istruzioni? `<details><summary>📘 Istruzioni</summary><div class="muted">${g.istruzioni}</div></details>`:''}
+      ${g.sicurezza? `<details><summary>🛡️ Sicurezza</summary><div class="muted">${g.sicurezza}</div></details>`:''}
+      ${(g.tags&&g.tags.length)? `<div class="muted">Tag: ${g.tags.join(", ")}</div>`:''}
+    `;
+    elGrid.appendChild(card);
+  });
+}
+
+async function load(){
+  elQ.value = initialQ;
+  try{
+    const r = await fetch(RAW_URL,{cache:'no-store'});
+    if(!r.ok) throw 0;
+    state.all = await r.json();
+  }catch{
+    // dati d'esempio se games.json non esiste
+    state.all = [
+      {name:"Palla avvelenata", materiale:"1 pallone", eta:6, giocatori:"6+", durata:10, spazio:"outdoor", tags:["palla","movimento"], breve:"Evita la palla.", istruzioni:"Cerchio, tiri sotto la vita.", sicurezza:"Attenzione al viso."},
+      {name:"Staffetta a coppie", materiale:"Nessuno", eta:8, giocatori:"4+", durata:15, spazio:"outdoor", tags:["staffetta","gara"], breve:"Percorso a coppie.", istruzioni:"Tracciato semplice, a turno.", sicurezza:"Rimuovere ostacoli."}
+    ];
+  }
+  filter();
+}
+
+elQ.addEventListener('input', filter);
+elOrd.addEventListener('change', filter);
+
+load();
+</script>
+</body>
+</html>
