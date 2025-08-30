@@ -1,2 +1,4 @@
 # Ludoteca-collaborativa
-Un archivio collaborativo di giochi e attività per l’animazione in parrocchia, condiviso e aggiornabile da tutti
+Un archivio collaborativo di giochi e attività per l’animazione in parrocchia, condiviso e aggiornabile da tutti.
+
+https://biolo20.github.io/Ludoteca-collaborativa/
