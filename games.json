@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Palla avvelenata",
+    "materiale": "1 pallone",
+    "eta": 6,
+    "giocatori": "6+",
+    "durata": 10,
+    "spazio": "outdoor",
+    "tags": ["palla", "movimento"],
+    "breve": "I giocatori evitano di essere colpiti dalla palla.",
+    "istruzioni": "Forma un cerchio; chi ha la palla cerca di colpire gli altri sotto la vita.",
+    "sicurezza": "Evita tiri al viso. Spazio sgombro."
+  },
+  {
+    "name": "Staffetta a coppie",
+    "materiale": "Nessuno",
+    "eta": 8,
+    "giocatori": "4+",
+    "durata": 15,
+    "spazio": "outdoor",
+    "tags": ["staffetta", "gara"],
+    "breve": "Gara a coppie su percorso semplice.",
+    "istruzioni": "Prepara un percorso; ogni coppia corre a turno fino al traguardo.",
+    "sicurezza": "Controlla che non ci siano ostacoli."
+  }
+]
