@@ -32,7 +32,7 @@
 
   <h1>➕ Aggiungi un nuovo gioco</h1>
 
-  <form id="f">
+  <form id="game-form">
     <div class="row">
       <label>Nome del gioco <input id="name" required placeholder="Es. Palla avvelenata"></label>
       <label>Categoria
@@ -62,7 +62,8 @@
     <label>Istruzioni sintetiche <textarea id="istruzioni" placeholder="Passaggi principali"></textarea></label>
     <label>Note di sicurezza <textarea id="sicurezza" placeholder="Accortezze"></textarea></label>
     <label>Tag (separati da virgola) <input id="tags" placeholder="palla, movimento, cooperativo"></label>
-
+    <input name="honeypot" style="display:none">
+    
     <div class="row">
       <button type="button" class="btn btn-primary" id="issue">Invia proposta (Issue GitHub)</button>
       <button type="button" class="btn" id="copy">Copia JSON</button>
@@ -144,6 +145,47 @@ ${JSON.stringify(o,null,2)}
 `;
   const url = `${ISSUE_BASE}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
   window.open(url,'_blank','noopener,noreferrer');
+});
+</script>
+  <script>
+document.getElementById("game-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.target;
+  const d = new FormData(f);
+  const data = {
+    nome: d.get("nome"),
+    categoria: d.get("categoria"),
+    eta: d.get("eta"),
+    giocatori: d.get("giocatori"),
+    materiale: d.get("materiale"),
+    durata: d.get("durata"),
+    descrizione: d.get("descrizione"),
+    istruzioni: d.get("istruzioni"),
+    sicurezza: d.get("sicurezza") || "",
+    tag: d.get("tag") || "",
+    honeypot: d.get("honeypot") || ""
+  };
+
+  const btn = f.querySelector("button[type=submit]");
+  const old = btn.textContent;
+  btn.disabled = true; btn.textContent = "Invio…";
+
+  try {
+    const res = await fetch("https://ludoteca-worker.biololeonardo.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || "Errore");
+
+    alert("🎉 Proposta inviata! Vedi Pull Request: " + json.pr_url);
+    f.reset();
+  } catch (err) {
+    alert("⚠️ Ops: " + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = old;
+  }
 });
 </script>
 </body>
