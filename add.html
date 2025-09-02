@@ -1,192 +1,102 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aggiungi gioco – Ludoteca</title>
-<style>
-  :root{--bg:#faf7f2;--text:#0f172a;--muted:#475569;--card:#fff;--stroke:#e6e6ea;--shadow:0 12px 30px rgba(15,23,42,.08);--accent:#2563eb}
-  *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-  .wrap{max-width:860px;margin:0 auto;padding:24px}
-  header{display:flex;gap:10px;margin-bottom:12px}
-  .back{padding:10px 12px;border:1px solid var(--stroke);border-radius:12px;background:#fff;box-shadow:var(--shadow);text-decoration:none}
-  h1{font-size:clamp(1.6rem,3vw,2.2rem);margin:8px 0 16px}
-  form{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:var(--shadow);padding:16px;display:grid;gap:10px}
-  label{display:flex;flex-direction:column;gap:6px}
-  input,select,textarea{padding:12px;border-radius:12px;border:1px solid var(--stroke);background:#fff}
-  textarea{min-height:90px;resize:vertical}
-  .row{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
-  @media(max-width:760px){.row{grid-template-columns:1fr}}
-  .btn{cursor:pointer;border:none;border-radius:14px;padding:14px 16px;font-weight:700}
-  .btn-primary{background:linear-gradient(90deg,#22c55e,#06b6d4);color:#fff;box-shadow:0 14px 28px rgba(34,197,94,.25)}
-  .mono{white-space:pre-wrap;background:#fff;border:1px solid var(--stroke);border-radius:14px;padding:12px}
-  .muted{color:var(--muted)}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aggiungi un nuovo gioco – Ludoteca collaborativa</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 24px auto; padding: 0 16px; }
+    label { display:block; margin: 12px 0 6px; font-weight:600; }
+    input, textarea, select, button { width:100%; padding:10px; font-size:16px; }
+    button { margin-top:14px; cursor:pointer; }
+    nav a { margin-right:12px; }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <a class="back" href="index.html">← Home</a>
-    <a class="back" href="catalogo.html">📚 Catalogo</a>
-  </header>
+  <nav>
+    <a href="./index.html">← Home</a>
+    <a href="./catalogo.html">Catalogo</a>
+  </nav>
 
   <h1>➕ Aggiungi un nuovo gioco</h1>
 
   <form id="game-form">
-    <div class="row">
-      <label>Nome del gioco <input id="name" required placeholder="Es. Palla avvelenata"></label>
-      <label>Categoria
-        <select id="categoria">
-          <option value="">—</option>
-          <option value="palla">Giochi con la palla</option>
-          <option value="staffetta">Staffette</option>
-          <option value="teatro">Giochi teatrali</option>
-          <option value="rompicapo">Rompicapo</option>
-          <option value="indoor">Indoor</option>
-          <option value="outdoor">Outdoor</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="row">
-      <label>Età consigliata (numero) <input id="eta" type="number" min="3" step="1" placeholder="Es. 6"></label>
-      <label>Numero di giocatori <input id="giocatori" placeholder="Es. 4-8, 6+, 2-4"></label>
-    </div>
-
-    <div class="row">
-      <label>Materiale necessario <input id="materiale" placeholder="Es. 1 pallone / Nessuno"></label>
-      <label>Durata (minuti) <input id="durata" type="number" min="1" step="1" placeholder="Es. 10"></label>
-    </div>
-
-    <label>Descrizione breve <textarea id="breve" placeholder="Una riga che riassume il gioco"></textarea></label>
-    <label>Istruzioni sintetiche <textarea id="istruzioni" placeholder="Passaggi principali"></textarea></label>
-    <label>Note di sicurezza <textarea id="sicurezza" placeholder="Accortezze"></textarea></label>
-    <label>Tag (separati da virgola) <input id="tags" placeholder="palla, movimento, cooperativo"></label>
+    <!-- honeypot antispam -->
     <input name="honeypot" style="display:none">
-    
-    <div class="row">
-      <button type="button" class="btn btn-primary" id="issue">Invia proposta (Issue GitHub)</button>
-      <button type="button" class="btn" id="copy">Copia JSON</button>
-    </div>
-    <div id="json" class="mono"></div>
-    <p class="muted">La proposta viene inviata come Issue al repository. Un admin la rivede e la pubblica in <code>games.json</code>.</p>
+
+    <label>Nome del gioco</label>
+    <input name="nome" required>
+
+    <label>Categoria</label>
+    <input name="categoria" required placeholder="es. Staffette, Giochi con la palla">
+
+    <label>Età minima</label>
+    <input name="eta" type="number" required>
+
+    <label>Numero di giocatori</label>
+    <input name="giocatori" required placeholder="es. 2-6">
+
+    <label>Durata (minuti)</label>
+    <input name="durata" type="number" required>
+
+    <label>Materiale necessario</label>
+    <input name="materiale" required>
+
+    <label>Descrizione breve</label>
+    <textarea name="descrizione" required></textarea>
+
+    <label>Istruzioni sintetiche</label>
+    <textarea name="istruzioni" required></textarea>
+
+    <label>Note di sicurezza (opzionale)</label>
+    <input name="sicurezza">
+
+    <label>Tag (separati da virgola, opzionale)</label>
+    <input name="tag" placeholder="es. cooperativo, legno">
+
+    <button type="submit">Invia proposta</button>
   </form>
-</div>
 
-<script>
-const GH_USER = "biolo20";
-const GH_REPO = "Ludoteca-collaborativa";
-const ISSUE_BASE = `https://github.com/${GH_USER}/${GH_REPO}/issues/new`;
-
-function toObj(){
-  const val = id => document.getElementById(id).value.trim();
-  const toTags = s => s ? s.split(",").map(t=>t.trim()).filter(Boolean) : [];
-  const tags = toTags(val('tags'));
-  const cat = val('categoria');
-  // se è selezionata una categoria, ci assicuriamo che il tag sia presente
-  if(cat && !tags.includes(cat)) tags.unshift(cat);
-
-  const o = {
-    name: val('name'),
-    materiale: val('materiale')||undefined,
-    eta: Number(val('eta'))||undefined,
-    giocatori: val('giocatori')||undefined,
-    durata: Number(val('durata'))||undefined,
-    spazio: (cat==='indoor' || cat==='outdoor') ? cat : undefined,
-    tags,
-    breve: val('breve')||undefined,
-    istruzioni: val('istruzioni')||undefined,
-    sicurezza: val('sicurezza')||undefined
-  };
-  Object.keys(o).forEach(k=> o[k]===undefined && delete o[k]);
-  return o;
-}
-
-function showJSON(){
-  const o = toObj();
-  document.getElementById('json').textContent = JSON.stringify(o,null,2);
-}
-['name','materiale','eta','giocatori','durata','breve','istruzioni','sicurezza','tags','categoria']
-  .forEach(id=> document.getElementById(id).addEventListener('input', showJSON));
-showJSON();
-
-document.getElementById('copy').addEventListener('click', async ()=>{
-  try{
-    await navigator.clipboard.writeText(document.getElementById('json').textContent);
-    alert('JSON copiato!');
-  }catch(e){ alert('Seleziona e copia manualmente.'); }
-});
-
-document.getElementById('issue').addEventListener('click', ()=>{
-  const o = toObj();
-  if(!o.name){ alert('Inserisci il nome del gioco.'); return; }
-  const title = `Nuovo gioco: ${o.name}`;
-  const body = `**Nome del gioco**: ${o.name}
-**Categoria/tag principali**: ${(o.tags||[]).join(', ') || '—'}
-**Materiale**: ${o.materiale||'—'}
-**Età consigliata (numero)**: ${o.eta||'—'}
-**Numero giocatori**: ${o.giocatori||'—'}
-**Durata (minuti)**: ${o.durata||'—'}
-**Spazio (indoor/outdoor)**: ${o.spazio||'—'}
-
-**Descrizione breve**:
-${o.breve||'—'}
-
-**Istruzioni sintetiche**:
-${o.istruzioni||'—'}
-
-**Note di sicurezza**:
-${o.sicurezza||'—'}
-
-**JSON suggerito**:
-\`\`\`json
-${JSON.stringify(o,null,2)}
-\`\`\`
-`;
-  const url = `${ISSUE_BASE}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
-  window.open(url,'_blank','noopener,noreferrer');
-});
-</script>
   <script>
-document.getElementById("game-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const f = e.target;
-  const d = new FormData(f);
-  const data = {
-    nome: d.get("nome"),
-    categoria: d.get("categoria"),
-    eta: d.get("eta"),
-    giocatori: d.get("giocatori"),
-    materiale: d.get("materiale"),
-    durata: d.get("durata"),
-    descrizione: d.get("descrizione"),
-    istruzioni: d.get("istruzioni"),
-    sicurezza: d.get("sicurezza") || "",
-    tag: d.get("tag") || "",
-    honeypot: d.get("honeypot") || ""
-  };
+  document.getElementById("game-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const d = new FormData(f);
+    const data = {
+      nome: d.get("nome"),
+      categoria: d.get("categoria"),
+      eta: d.get("eta"),
+      giocatori: d.get("giocatori"),
+      materiale: d.get("materiale"),
+      durata: d.get("durata"),
+      descrizione: d.get("descrizione"),
+      istruzioni: d.get("istruzioni"),
+      sicurezza: d.get("sicurezza") || "",
+      tag: d.get("tag") || "",
+      honeypot: d.get("honeypot") || ""
+    };
 
-  const btn = f.querySelector("button[type=submit]");
-  const old = btn.textContent;
-  btn.disabled = true; btn.textContent = "Invio…";
+    const btn = f.querySelector("button[type=submit]");
+    const old = btn.textContent;
+    btn.disabled = true; btn.textContent = "Invio…";
 
-  try {
-    const res = await fetch("https://ludoteca-worker.biololeonardo.workers.dev", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.message || "Errore");
+    try {
+      const res = await fetch("https://ludoteca-worker.biololeonardo.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || "Errore");
 
-    alert("🎉 Proposta inviata! Vedi Pull Request: " + json.pr_url);
-    f.reset();
-  } catch (err) {
-    alert("⚠️ Ops: " + err.message);
-  } finally {
-    btn.disabled = false; btn.textContent = old;
-  }
-});
-</script>
+      alert("🎉 Proposta inviata! Vedi Pull Request: " + json.pr_url);
+      f.reset();
+    } catch (err) {
+      alert("⚠️ Ops: " + err.message);
+    } finally {
+      btn.disabled = false; btn.textContent = old;
+    }
+  });
+  </script>
 </body>
 </html>
