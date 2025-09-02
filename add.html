@@ -98,5 +98,46 @@
     }
   });
   </script>
+  <script>
+document.getElementById("game-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.target;
+  const d = new FormData(f);
+  const data = {
+    nome: d.get("nome"),
+    categoria: d.get("categoria"),
+    eta: d.get("eta"),
+    giocatori: d.get("giocatori"),
+    materiale: d.get("materiale"),
+    durata: d.get("durata"),
+    descrizione: d.get("descrizione"),
+    istruzioni: d.get("istruzioni"),
+    sicurezza: d.get("sicurezza") || "",
+    tag: d.get("tag") || "",
+    honeypot: d.get("honeypot") || ""
+  };
+
+  const btn = f.querySelector("button[type=submit]");
+  const old = btn.textContent;
+  btn.disabled = true; btn.textContent = "Invio…";
+
+  try {
+    const res = await fetch("https://ludoteca-worker.biololeonardo.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || "Errore");
+
+    alert("🎉 Proposta inviata! Vedi Pull Request: " + json.pr_url);
+    f.reset();
+  } catch (err) {
+    alert("⚠️ Ops: " + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = old;
+  }
+});
+</script>
 </body>
 </html>
