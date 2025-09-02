@@ -6,7 +6,10 @@
     "giocatori": "6+",
     "durata": 10,
     "spazio": "outdoor",
-    "tags": ["palla", "movimento"],
+    "tags": [
+      "palla",
+      "movimento"
+    ],
     "breve": "I giocatori evitano di essere colpiti dalla palla.",
     "istruzioni": "Forma un cerchio; chi ha la palla cerca di colpire gli altri sotto la vita.",
     "sicurezza": "Evita tiri al viso. Spazio sgombro."
@@ -18,22 +21,41 @@
     "giocatori": "4+",
     "durata": 15,
     "spazio": "outdoor",
-    "tags": ["staffetta", "gara"],
+    "tags": [
+      "staffetta",
+      "gara"
+    ],
     "breve": "Gara a coppie su percorso semplice.",
     "istruzioni": "Prepara un percorso; ogni coppia corre a turno fino al traguardo.",
     "sicurezza": "Controlla che non ci siano ostacoli."
   },
   {
-  "name": "Nascondino mimetico notturno",
-  "materiale": "Nessuno",
-  "eta": 10,
-  "giocatori": "30max",
-  "spazio": "outdoor",
-  "tags": [
-    "movimento",
-    "operativo",
-    "outdoor"
-  ],
-  "breve": "Il gioco si sviluppa al crepuscolo, nella tarda sera o di notte al bagliore della luna, dopo o\nprima di una passeggiata notturna. Il gruppo viene diviso in due squadre: i cacciatori e la\npreda. I membri della preda si nascondono in un tratto prestabilito dei sentiero, cercando\ndi mimetizzarsi il più possibile con la natura circostante. Dopo un po' di tempo partono i\ncacciatori, rimanendo possibilmente tutti uniti, e muovendosi in assoluto silenzio. Quando\npassano davanti ad un nascondiglio senza accorgersi della preda mimetizzata questa\nesce e si unisce ai cacciatori. Le prede scoperte fanno lo stesso finché tutto il gruppo è\nnuovamente riunito. E' importante badare a che il gioco si svolga in silenzio, anche per\nnon disturbare eccessivamente gli abitanti dei bosco."
-}
+    "name": "Nascondino mimetico notturno",
+    "materiale": "Nessuno",
+    "eta": 10,
+    "giocatori": "30max",
+    "spazio": "outdoor",
+    "tags": [
+      "movimento",
+      "operativo",
+      "outdoor"
+    ],
+    "breve": "Il gioco si sviluppa al crepuscolo, nella tarda sera o di notte al bagliore della luna, dopo o\nprima di una passeggiata notturna. Il gruppo viene diviso in due squadre: i cacciatori e la\npreda. I membri della preda si nascondono in un tratto prestabilito dei sentiero, cercando\ndi mimetizzarsi il piÃ¹ possibile con la natura circostante. Dopo un po' di tempo partono i\ncacciatori, rimanendo possibilmente tutti uniti, e muovendosi in assoluto silenzio. Quando\npassano davanti ad un nascondiglio senza accorgersi della preda mimetizzata questa\nesce e si unisce ai cacciatori. Le prede scoperte fanno lo stesso finchÃ© tutto il gruppo Ã¨\nnuovamente riunito. E' importante badare a che il gioco si svolga in silenzio, anche per\nnon disturbare eccessivamente gli abitanti dei bosco."
+  },
+  {
+    "nome": "hjojoi",
+    "categoria": "oijoi",
+    "eta": 8,
+    "giocatori": "7",
+    "materiale": "jo",
+    "durata": 76,
+    "descrizione": "mlk",
+    "istruzioni": "ji",
+    "sicurezza": "iuhiuhiu",
+    "tag": [
+      "niuhiho"
+    ],
+    "fonte": "submission_pubblica",
+    "created_at": "2025-09-02T20:11:52.513Z"
+  }
 ]
